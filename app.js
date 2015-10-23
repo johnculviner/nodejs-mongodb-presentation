@@ -18,11 +18,9 @@ app.get('/ping', (req, res) => {
     });
 });
 
-db.connect();
-
-app.listenAsync(3000)
+db.connect()
+  .then(() => app.listenAsync(3000))
   .then(() => console.log('server up!'));
-
 
 
 

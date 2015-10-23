@@ -4,9 +4,16 @@ mongoose.Promise = Promise;
 
 module.exports.connect = function connect() {
 
-  mongoose.connect('mongodb://localhost/nodejs-mongodb-presentation');
+  return new Promise((resolve, reject) => {
+    mongoose.connect('mongodb://localhost/nodejs-mongodb-presentation');
 
-  mongoose.connection.on('open', () => {
-    console.log('mongoose connected!');
+    mongoose.connection.once('open', () => {
+      console.log('mongoose connected!');
+      resolve();
+    });
+
+    mongoose.connection.on('error', () => {
+      reject();
+    });
   });
 };
