@@ -1,0 +1,22 @@
+{
+  "name": "nodejs-mongodb-presentation",
+  "version": "1.0.0",
+  "description": "The code for my NodeJS and MongoDB Presentation",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/johnculviner/nodejs-mongodb-presentation.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/johnculviner/nodejs-mongodb-presentation/issues"
+  },
+  "homepage": "https://github.com/johnculviner/nodejs-mongodb-presentation#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  }
+}
