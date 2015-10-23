@@ -2,6 +2,7 @@ var Promise = require('bluebird');
 var app = Promise.promisifyAll(require('express')());
 var childProcess = Promise.promisifyAll(require('child_process'));
 var fs = Promise.promisifyAll(require('fs'));
+var db = require('./db');
 
 app.get('/ping', (req, res) => {
 
@@ -17,6 +18,11 @@ app.get('/ping', (req, res) => {
     });
 });
 
+db.connect();
+
 app.listenAsync(3000)
   .then(() => console.log('server up!'));
+
+
+
 
