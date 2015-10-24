@@ -43,6 +43,23 @@ app.put('/pages', (req, res) => {
     });
 });
 
+app.get('/pages/:id', (req, res) => {
+  Page.findById(req.params.id)
+    .then(page => res.json(page));
+});
+
+app.delete('/pages/:id', (req, res) => {
+  Page.findByIdAndRemove(req.params.id)
+    .then(() => res.status(204).end());
+});
+
+app.get('/pages', (req,res) => {
+  Page.find()
+    .stream({transform: obj => JSON.stringify(obj) + ',\n'})
+    .pipe(res);
+});
+
+
 db.connect()
   .then(() => app.listenAsync(3000))
   .then(() => console.log('server up!'));
