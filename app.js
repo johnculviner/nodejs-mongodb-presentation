@@ -33,7 +33,14 @@ app.put('/pages', (req, res) => {
 
       return page.save();
     })
-    .then(page => res.json(page._doc));
+    .then(page => res.json(page._doc))
+    .catch(err => {
+      if (err.name == 'ValidationError') {
+        res.json(err.errors);
+      } else {
+        res.json({message: 'An error has occurred'});
+      }
+    });
 });
 
 db.connect()
