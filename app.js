@@ -36,9 +36,13 @@ function needAuth(req, res, next) {
   next();
 }
 
-db.connect()
-  .then(() => app.listenAsync(3000))
-  .then(() => console.log('server up!'));
+module.exports.start = (dbName) => {
+  return db.connect(dbName)
+    .then(() => app.listenAsync(3000))
+    .then(() => console.log('server up!'));
+};
+
+
 
 
 

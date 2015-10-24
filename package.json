@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/johnculviner/nodejs-mongodb-presentation#readme",
   "dependencies": {
+    "JSONStream": "^1.0.6",
     "bluebird": "^2.10.2",
     "body-parser": "^1.14.1",
     "express": "^4.13.3",

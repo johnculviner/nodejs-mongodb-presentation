@@ -1,3 +1,5 @@
+var JSONStream = require('JSONStream');
+
 module.exports = function (model) {
   return {
     put: (req, res) => {
@@ -30,7 +32,8 @@ module.exports = function (model) {
     },
     getAll: (req, res) => {
       model.find()
-        .stream({transform: obj => JSON.stringify(obj) + ',\n'})
+        .stream()
+        .pipe(JSONStream.stringify())
         .pipe(res);
     }
   };
