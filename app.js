@@ -3,7 +3,8 @@ var app = Promise.promisifyAll(require('express')());
 var childProcess = Promise.promisifyAll(require('child_process'));
 var fs = Promise.promisifyAll(require('fs'));
 var db = require('./db');
-var Page = require('./Page');
+var restFactory = require('./rest-factory');
+
 
 app.use(require('body-parser').json());
 
@@ -21,44 +22,19 @@ app.get('/ping', (req, res) => {
     });
 });
 
-app.put('/pages', (req, res) => {
+var pages = restFactory(require('./Page'));
+app.put('/pages', pages.put);
+app.get('/pages/:id', pages.getOne);
+app.get('/pages', pages.getAll);
+app.delete('/pages/:id', needAuth, pages.delete);
 
-  Page.findById(req.body._id)
-    .then(page => {
-      if(!page) {
-        page = new Page();
-      }
-
-      Object.assign(page, req.body);
-
-      return page.save();
-    })
-    .then(page => res.json(page._doc))
-    .catch(err => {
-      if (err.name == 'ValidationError') {
-        res.json(err.errors);
-      } else {
-        res.json({message: 'An error has occurred'});
-      }
-    });
-});
-
-app.get('/pages/:id', (req, res) => {
-  Page.findById(req.params.id)
-    .then(page => res.json(page));
-});
-
-app.delete('/pages/:id', (req, res) => {
-  Page.findByIdAndRemove(req.params.id)
-    .then(() => res.status(204).end());
-});
-
-app.get('/pages', (req,res) => {
-  Page.find()
-    .stream({transform: obj => JSON.stringify(obj) + ',\n'})
-    .pipe(res);
-});
-
+function needAuth(req, res, next) {
+  if (!req.query.password) {
+    res.status(401).end();
+    return;
+  }
+  next();
+}
 
 db.connect()
   .then(() => app.listenAsync(3000))
